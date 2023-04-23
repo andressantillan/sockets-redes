@@ -1,13 +1,19 @@
 import socket
 
+IP_ADDRESS = '127.0.0.1'
+
 def main():
-    server_address = (('0.0.0.0', 12345))
+    server_address = ((IP_ADDRESS, 12345))
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(server_address)
-    client.send('Client'.encode())
-    resp_server = client.recv(4096)
+
+    while True:
+        text = input()
+        client.send(text.encode())
+        data = client.recv(4096)
+        print(data.decode())
+    
     client.close()
-    print(resp_server.decode())
 
 if __name__ == '__main__' :
     main()

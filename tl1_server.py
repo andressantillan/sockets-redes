@@ -3,6 +3,34 @@ import string
 import random
 import time
 
+IP_ADDRESS = '127.0.0.1'
+
+def suma(connection):
+	data = connection.recv(4096)
+	args = data.decode().split(' ')
+	msg = ''
+
+	if len(args) < 2:
+		connection.send('Faltan argumentos.'.encode())
+		return False
+
+	if len(args) > 2:
+		connection.send('Solo 2 enteros.'.encode())
+		return False
+	
+	for x in args:
+		try:
+			int(x)
+		except ValueError:
+			msg += f'{x} no es un entero. '
+	
+	if msg != '':
+		connection.send(msg.encode())
+		return False
+
+	resultado = int(args[0]) + int(args[1])
+	connection.sendall(str(resultado).encode())
+
 def recv_message(connection):
 	data = connection.recv(4096)
 	print(data.decode())
@@ -18,8 +46,8 @@ def character_generator(connection):
 	time.sleep(1)
 
 def main():
-	print('====== Starting service in  0.0.0.0:12345 ======')
-	server_address = (('0.0.0.0', 12345))
+	print(f'====== Starting service in  {IP_ADDRESS}:12345 ======')
+	server_address = ((IP_ADDRESS, 12345))
 
 	server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -30,9 +58,9 @@ def main():
 	
 	try:
 		while True:
-			recv_message(connection)
+			suma(connection)
 	except:
-		print('received data is not printable')
+		print('recieved data is no printable')
 
 	connection.close()
 	print('====== Service down ======')	
