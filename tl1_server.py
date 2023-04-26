@@ -3,7 +3,7 @@ import string
 import random
 import time
 
-IP_ADDRESS = '127.0.0.1'
+IP_ADDRESS = '0.0.0.0'
 
 def suma(connection):
 	data = connection.recv(4096)

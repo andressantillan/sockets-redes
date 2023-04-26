@@ -8,10 +8,10 @@ def main():
     client.connect(server_address)
 
     while True:
-        text = input('Ingrese dos numeros separados de un espacio para realizar la suma:\n')
-        client.send(text.encode())
         data = client.recv(4096)
         print(data.decode())
+        text = input()
+        client.send(text.encode())
     
     client.close()
 
